@@ -452,12 +452,12 @@
             <div class="screen contacts-screen hidden" id="contacts">
                 <h1 class="screen-header" style="padding: 20px;">Contacts</h1>
                 <div class="contacts-list" id="contactsList"></div>
-                <button class="form-button" onclick="showAddContact()" style="margin: 20px;">Add Contact</button>
+                <button class="form-button" id="showAddContactBtn" style="margin: 20px;">Add Contact</button>
                 <div id="addContactForm" class="add-contact-form hidden">
                     <input type="text" class="form-input" id="contactName" placeholder="Name">
                     <input type="tel" class="form-input" id="contactPhone" placeholder="Phone">
-                    <button class="form-button" onclick="addContact()">Save Contact</button>
-                    <button class="form-button" onclick="hideAddContact()" style="background: #666;">Cancel</button>
+                    <button class="form-button" id="saveContactBtn">Save Contact</button>
+                    <button class="form-button" id="cancelContactBtn" style="background: #666;">Cancel</button>
                 </div>
             </div>
 
@@ -465,59 +465,59 @@
             <div class="screen keypad-screen hidden" id="keypad">
                 <div class="number-display" id="numberDisplay"></div>
                 <div class="keypad">
-                    <div class="key" onclick="addNumber('1')">
+                    <div class="key" data-number="1">
                         <span class="key-number">1</span>
                     </div>
-                    <div class="key" onclick="addNumber('2')">
+                    <div class="key" data-number="2">
                         <span class="key-number">2</span>
                         <span class="key-letters">ABC</span>
                     </div>
-                    <div class="key" onclick="addNumber('3')">
+                    <div class="key" data-number="3">
                         <span class="key-number">3</span>
                         <span class="key-letters">DEF</span>
                     </div>
-                    <div class="key" onclick="addNumber('4')">
+                    <div class="key" data-number="4">
                         <span class="key-number">4</span>
                         <span class="key-letters">GHI</span>
                     </div>
-                    <div class="key" onclick="addNumber('5')">
+                    <div class="key" data-number="5">
                         <span class="key-number">5</span>
                         <span class="key-letters">JKL</span>
                     </div>
-                    <div class="key" onclick="addNumber('6')">
+                    <div class="key" data-number="6">
                         <span class="key-number">6</span>
                         <span class="key-letters">MNO</span>
                     </div>
-                    <div class="key" onclick="addNumber('7')">
+                    <div class="key" data-number="7">
                         <span class="key-number">7</span>
                         <span class="key-letters">PQRS</span>
                     </div>
-                    <div class="key" onclick="addNumber('8')">
+                    <div class="key" data-number="8">
                         <span class="key-number">8</span>
                         <span class="key-letters">TUV</span>
                     </div>
-                    <div class="key" onclick="addNumber('9')">
+                    <div class="key" data-number="9">
                         <span class="key-number">9</span>
                         <span class="key-letters">WXYZ</span>
                     </div>
-                    <div class="key" onclick="addNumber('*')">
+                    <div class="key" data-number="*">
                         <span class="key-number">*</span>
                     </div>
-                    <div class="key" onclick="addNumber('0')">
+                    <div class="key" data-number="0">
                         <span class="key-number">0</span>
                         <span class="key-letters">+</span>
                     </div>
-                    <div class="key" onclick="addNumber('#')">
+                    <div class="key" data-number="#">
                         <span class="key-number">#</span>
                     </div>
                 </div>
                 <div class="keypad-actions">
-                    <button class="action-button call-button" onclick="makeCall()">
+                    <button class="action-button call-button" id="callBtn">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
                             <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
                         </svg>
                     </button>
-                    <button class="action-button delete-button" onclick="deleteNumber()">
+                    <button class="action-button delete-button" id="deleteBtn">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
                             <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.12c.36.53.9.88 1.59.88h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3.7 14.3l-1.4 1.4L12 13.4l-4.9 4.9-1.4-1.4L10.6 12 5.7 7.1l1.4-1.4L12 10.6l4.9-4.9 1.4 1.4L13.4 12l4.9 4.9z"/>
                         </svg>
@@ -534,7 +534,7 @@
                     <div class="call-status" id="callStatus">Calling...</div>
                 </div>
                 <div class="call-controls">
-                    <button class="control-button" onclick="toggleMute(this)">
+                    <button class="control-button" id="muteBtn">
                         <div class="control-icon" id="muteIcon">
                             <svg viewBox="0 0 24 24">
                                 <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/>
@@ -542,7 +542,7 @@
                         </div>
                         <span class="control-label">mute</span>
                     </button>
-                    <button class="control-button" onclick="toggleKeypad()">
+                    <button class="control-button" id="keypadBtn">
                         <div class="control-icon">
                             <svg viewBox="0 0 24 24">
                                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
@@ -550,7 +550,7 @@
                         </div>
                         <span class="control-label">keypad</span>
                     </button>
-                    <button class="control-button" onclick="toggleSpeaker(this)">
+                    <button class="control-button" id="speakerBtn">
                         <div class="control-icon" id="speakerIcon">
                             <svg viewBox="0 0 24 24">
                                 <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
@@ -558,7 +558,7 @@
                         </div>
                         <span class="control-label">speaker</span>
                     </button>
-                    <button class="control-button" onclick="addCall()">
+                    <button class="control-button" id="addCallBtn">
                         <div class="control-icon">
                             <svg viewBox="0 0 24 24">
                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
@@ -566,7 +566,7 @@
                         </div>
                         <span class="control-label">add call</span>
                     </button>
-                    <button class="control-button" onclick="facetime()">
+                    <button class="control-button" id="facetimeBtn">
                         <div class="control-icon">
                             <svg viewBox="0 0 24 24">
                                 <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
@@ -574,7 +574,7 @@
                         </div>
                         <span class="control-label">FaceTime</span>
                     </button>
-                    <button class="control-button" onclick="contacts()">
+                    <button class="control-button" id="contactsBtn">
                         <div class="control-icon">
                             <svg viewBox="0 0 24 24">
                                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -582,7 +582,7 @@
                         </div>
                         <span class="control-label">contacts</span>
                     </button>
-                    <button class="control-button end-call-button" onclick="endCall()">
+                    <button class="control-button end-call-button" id="endCallBtn">
                         <div class="control-icon">
                             <svg viewBox="0 0 24 24" fill="white">
                                 <path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.4 0-.75-.16-1.01-.51L.41 13.34c-.18-.24-.29-.88 0-1.12.58-.87 1.28-1.66 2.07-2.35.51-.44 1.14-.77 1.82-.98.32-.1.65-.16.99-.16.42 0 .83.08 1.21.24 1.27.53 2.64.83 4.03.89V3.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v4.5c0 .82-.67 1.5-1.5 1.5z"/>
@@ -594,25 +594,25 @@
             </div>
 
             <div class="tab-bar">
-                <button class="tab-button active" onclick="showScreen('favorites')">
+                <button class="tab-button active" data-screen="favorites">
                     <svg class="tab-icon" viewBox="0 0 24 24">
                         <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                     </svg>
                     <span class="tab-label">Favorites</span>
                 </button>
-                <button class="tab-button" onclick="showScreen('recents')">
+                <button class="tab-button" data-screen="recents">
                     <svg class="tab-icon" viewBox="0 0 24 24">
                         <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
                     </svg>
                     <span class="tab-label">Recents</span>
                 </button>
-                <button class="tab-button" onclick="showScreen('contacts')">
+                <button class="tab-button" data-screen="contacts">
                     <svg class="tab-icon" viewBox="0 0 24 24">
                         <path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.75c1.24 0 2.25 1.01 2.25 2.25S13.24 11.25 12 11.25 9.75 10.24 9.75 9s1.01-2.25 2.25-2.25zM17 17H7v-1.5c0-1.67 3.33-2.5 5-2.5s5 .83 5 2.5V17z"/>
                     </svg>
                     <span class="tab-label">Contacts</span>
                 </button>
-                <button class="tab-button" onclick="showScreen('keypad')">
+                <button class="tab-button" data-screen="keypad">
                     <svg class="tab-icon" viewBox="0 0 24 24">
                         <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                     </svg>
@@ -623,7 +623,7 @@
     </div>
 
     <script>
-        // Local file compatible version - all functions work with file:// protocol
+        // Local file compatible version with proper event listeners
         let currentNumber = '';
         let contacts = [
             { name: 'John Appleseed', phone: '(555) 123-4567', avatar: 'JA' },
@@ -640,7 +640,10 @@
         let isMuted = false;
         let isSpeaker = false;
         let isKeypadVisible = false;
+        let callTimer;
+        let callSeconds = 15;
 
+        // Update time
         function updateTime() {
             const now = new Date();
             const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
@@ -650,27 +653,22 @@
         setInterval(updateTime, 1000);
         updateTime();
 
+        // Screen navigation
         function showScreen(screenId) {
-            // Hide all screens
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.add('hidden');
             });
-            
-            // Show selected screen
             document.getElementById(screenId).classList.remove('hidden');
             
-            // Update tab buttons
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.classList.remove('active');
             });
             
-            // Find the clicked button and make it active
-            const clickedButton = event ? event.target.closest('.tab-button') : null;
-            if (clickedButton) {
-                clickedButton.classList.add('active');
+            const activeButton = document.querySelector(`[data-screen="${screenId}"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
             }
-            
-            // Render appropriate content
+
             if (screenId === 'favorites') {
                 renderFavorites();
             } else if (screenId === 'recents') {
@@ -680,6 +678,7 @@
             }
         }
 
+        // Keypad functions
         function addNumber(num) {
             currentNumber += num;
             document.getElementById('numberDisplay').textContent = currentNumber;
@@ -695,11 +694,9 @@
             
             const contact = contacts.find(c => c.phone.replace(/\D/g, '') === currentNumber.replace(/\D/g, ''));
             
-            // Hide keypad and show call screen
             document.getElementById('keypad').classList.add('hidden');
             document.getElementById('callScreen').classList.remove('hidden');
             
-            // Set caller info
             if (contact) {
                 document.getElementById('callerName').textContent = contact.name;
                 document.getElementById('callerAvatar').textContent = contact.avatar;
@@ -710,7 +707,6 @@
             
             document.getElementById('callerNumber').textContent = currentNumber;
             
-            // Simulate call connection
             setTimeout(() => {
                 document.getElementById('callStatus').textContent = 'Ringing...';
             }, 1000);
@@ -720,9 +716,6 @@
                 startCallTimer();
             }, 3000);
         }
-
-        let callTimer;
-        let callSeconds = 15;
 
         function startCallTimer() {
             callTimer = setInterval(() => {
@@ -738,20 +731,16 @@
             clearInterval(callTimer);
             callSeconds = 15;
             
-            // Hide call screen and show keypad
             document.getElementById('callScreen').classList.add('hidden');
             document.getElementById('keypad').classList.remove('hidden');
             
-            // Reset call states
             isMuted = false;
             isSpeaker = false;
             isKeypadVisible = false;
             
-            // Reset UI states
             document.getElementById('muteIcon').parentElement.classList.remove('mute-active');
             document.getElementById('speakerIcon').parentElement.classList.remove('speaker-active');
             
-            // Add to recents
             const contact = contacts.find(c => c.phone.replace(/\D/g, '') === currentNumber.replace(/\D/g, ''));
             recents.unshift({
                 name: contact ? contact.name : currentNumber,
@@ -817,7 +806,7 @@
                         <div style="font-size: 14px; color: rgba(255,255,255,0.6);">${contact.phone}</div>
                     </div>
                 `;
-                item.onclick = () => callContact(contact);
+                item.addEventListener('click', () => callContact(contact));
                 favoritesList.appendChild(item);
             });
         }
@@ -842,7 +831,7 @@
                     </div>
                     <span style="color: rgba(255,255,255,0.6);">${recent.phone}</span>
                 `;
-                item.onclick = () => callNumber(recent.phone);
+                item.addEventListener('click', () => callNumber(recent.phone));
                 recentsList.appendChild(item);
             });
         }
@@ -861,7 +850,7 @@
                         <div style="font-size: 14px; color: rgba(255,255,255,0.6);">${contact.phone}</div>
                     </div>
                 `;
-                item.onclick = () => callContact(contact);
+                item.addEventListener('click', () => callContact(contact));
                 contactsList.appendChild(item);
             });
         }
@@ -901,10 +890,43 @@
             }
         }
 
-        // Initialize app
-        window.onload = function() {
+        // Event listeners setup
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab navigation
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const screenId = this.getAttribute('data-screen');
+                    showScreen(screenId);
+                });
+            });
+
+            // Keypad buttons
+            document.querySelectorAll('.key').forEach(key => {
+                key.addEventListener('click', function() {
+                    const number = this.getAttribute('data-number');
+                    addNumber(number);
+                });
+            });
+
+            // Action buttons
+            document.getElementById('callBtn').addEventListener('click', makeCall);
+            document.getElementById('deleteBtn').addEventListener('click', deleteNumber);
+            document.getElementById('endCallBtn').addEventListener('click', endCall);
+            document.getElementById('muteBtn').addEventListener('click', function() { toggleMute(this); });
+            document.getElementById('speakerBtn').addEventListener('click', function() { toggleSpeaker(this); });
+            document.getElementById('keypadBtn').addEventListener('click', toggleKeypad);
+            document.getElementById('addCallBtn').addEventListener('click', addCall);
+            document.getElementById('facetimeBtn').addEventListener('click', facetime);
+            document.getElementById('contactsBtn').addEventListener('click', contacts);
+
+            // Contact form
+            document.getElementById('showAddContactBtn').addEventListener('click', showAddContact);
+            document.getElementById('saveContactBtn').addEventListener('click', addContact);
+            document.getElementById('cancelContactBtn').addEventListener('click', hideAddContact);
+
+            // Initialize
             renderFavorites();
-        };
+        });
     </script>
 </body>
 </html>
