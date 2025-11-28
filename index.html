@@ -1,190 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iPhone Call App</title>
-    <style>
-        body { 
-            font-family: Arial; 
-            background: black; 
-            color: white; 
-            margin: 0;
-            padding: 20px;
-        }
-        
-        .container {
-            width: 375px;
-            margin: 0 auto;
-            background: #1C1C1E;
-            padding: 20px;
-            border-radius: 20px;
-        }
-        
-        #numberDisplay {
-            font-size: 32px;
-            text-align: center;
-            padding: 20px;
-            background: #2C2C2E;
-            margin-bottom: 20px;
-            min-height: 40px;
-        }
-        
-        .keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        button {
-            height: 60px;
-            font-size: 24px;
-            background: #3A3A3C;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-        
-        button:active {
-            background: #4A4A4C;
-        }
-        
-        .call-button {
-            background: #30D158;
-        }
-        
-        .call-button:active {
-            background: #2CB34A;
-        }
-        
-        .delete-button {
-            background: #FF3B30;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        #callScreen {
-            text-align: center;
-            padding: 40px 20px;
-        }
-        
-        #callerInfo {
-            font-size: 24px;
-            margin-bottom: 40px;
-        }
-        
-        .simple-controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 40px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Fixed Sidebar Toggle</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background: #222;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: width 0.3s ease;
+    overflow: hidden;
+  }
+
+  /* Collapsed Sidebar */
+  .sidebar.collapsed {
+    width: 60px;
+  }
+
+  /* Content */
+  .main-content {
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+  }
+
+  /* Content shift when collapsed */
+  .main-content.expanded {
+    margin-left: 60px;
+  }
+
+  /* Toggle Button */
+  .toggle-btn {
+    position: absolute;
+    top: 15px;
+    right: -25px;
+    width: 25px;
+    height: 25px;
+    background: #444;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 25px;
+    cursor: pointer;
+    font-size: 18px;
+  }
+</style>
 </head>
 <body>
-    <!-- Keypad Screen -->
-    <div id="keypadScreen" class="container">
-        <div id="numberDisplay"></div>
-        
-        <div class="keypad">
-            <button onclick="addNumber('1')">1</button>
-            <button onclick="addNumber('2')">2</button>
-            <button onclick="addNumber('3')">3</button>
-            <button onclick="addNumber('4')">4</button>
-            <button onclick="addNumber('5')">5</button>
-            <button onclick="addNumber('6')">6</button>
-            <button onclick="addNumber('7')">7</button>
-            <button onclick="addNumber('8')">8</button>
-            <button onclick="addNumber('9')">9</button>
-            <button onclick="addNumber('*')">*</button>
-            <button onclick="addNumber('0')">0</button>
-            <button onclick="addNumber('#')">#</button>
-        </div>
-        
-        <div style="display: flex; justify-content: center; gap: 20px;">
-            <button class="call-button" onclick="makeCall()">CALL</button>
-            <button class="delete-button" onclick="deleteNumber()">DELETE</button>
-        </div>
-    </div>
-    
-    <!-- Call Screen -->
-    <div id="callScreen" class="container hidden">
-        <div id="callerInfo">
-            <div style="font-size: 36px; margin-bottom: 10px;">📞 Calling</div>
-            <div id="callerNumber" style="font-size: 24px;"></div>
-            <div id="callStatus" style="font-size: 18px; color: #666; margin-top: 20px;">Connecting...</div>
-        </div>
-        
-        <div class="simple-controls">
-            <button onclick="endCall()">END CALL</button>
-            <button onclick="alert('Mute clicked')">MUTE</button>
-            <button onclick="alert('Speaker clicked')">SPEAKER</button>
-        </div>
-    </div>
 
-    <script>
-        // Global variables
-        let currentNumber = '';
-        let callTimer;
-        let callSeconds = 0;
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="toggle-btn" onclick="toggleBar()">─</div>
+  <h2>Menu</h2>
+  <p>Sidebar content here...</p>
+</div>
 
-        // Basic functions - guaranteed to work
-        function addNumber(num) {
-            currentNumber += num;
-            document.getElementById('numberDisplay').textContent = currentNumber;
-        }
+<!-- Main Content -->
+<div class="main-content">
+  <h1>Main Content</h1>
+  <p>This is the main area of the page.</p>
+</div>
 
-        function deleteNumber() {
-            currentNumber = currentNumber.slice(0, -1);
-            document.getElementById('numberDisplay').textContent = currentNumber;
-        }
+<script>
+  function toggleBar() {
+    const sidebar = document.querySelector(".sidebar");
+    const mainContent = document.querySelector(".main-content");
+    const btn = document.querySelector(".toggle-btn");
 
-        function makeCall() {
-            if (currentNumber.length === 0) return;
-            
-            // Show call screen
-            document.getElementById('keypadScreen').classList.add('hidden');
-            document.getElementById('callScreen').classList.remove('hidden');
-            
-            // Set caller info
-            document.getElementById('callerNumber').textContent = currentNumber;
-            
-            // Simulate call connection
-            setTimeout(function() {
-                document.getElementById('callStatus').textContent = 'Ringing...';
-            }, 1000);
-            
-            setTimeout(function() {
-                document.getElementById('callStatus').textContent = '00:00';
-                startCallTimer();
-            }, 3000);
-        }
+    const collapsed = sidebar.classList.toggle("collapsed");
+    mainContent.classList.toggle("expanded");
 
-        function startCallTimer() {
-            callTimer = setInterval(function() {
-                callSeconds++;
-                var minutes = Math.floor(callSeconds / 60);
-                var seconds = callSeconds % 60;
-                document.getElementById('callStatus').textContent = 
-                    minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
-            }, 1000);
-        }
+    // Change icon automatically
+    btn.textContent = collapsed ? "☰" : "─";
+  }
+</script>
 
-        function endCall() {
-            clearInterval(callTimer);
-            callSeconds = 0;
-            
-            // Go back to keypad
-            document.getElementById('callScreen').classList.add('hidden');
-            document.getElementById('keypadScreen').classList.remove('hidden');
-            
-            // Add to recent calls
-            alert('Call ended - added to recents: ' + currentNumber);
-        }
-    </script>
 </body>
 </html>
