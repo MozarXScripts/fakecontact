@@ -1,90 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Fixed Sidebar Toggle</title>
-<style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chill Game Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
 
-  /* Sidebar */
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100vh;
-    background: #222;
-    color: white;
-    padding: 20px;
-    box-sizing: border-box;
-    transition: width 0.3s ease;
-    overflow: hidden;
-  }
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            position: fixed;
+            overflow-y: auto;
+        }
 
-  /* Collapsed Sidebar */
-  .sidebar.collapsed {
-    width: 60px;
-  }
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+        }
 
-  /* Content */
-  .main-content {
-    margin-left: 250px;
-    padding: 20px;
-    transition: margin-left 0.3s ease;
-  }
+        .button-container1 {
+            cursor: pointer;
+            font-size: 40px;
+            user-select: none;
+            margin-bottom: 20px;
+        }
 
-  /* Content shift when collapsed */
-  .main-content.expanded {
-    margin-left: 60px;
-  }
+        .button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+        }
 
-  /* Toggle Button */
-  .toggle-btn {
-    position: absolute;
-    top: 15px;
-    right: -25px;
-    width: 25px;
-    height: 25px;
-    background: #444;
-    color: white;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 25px;
-    cursor: pointer;
-    font-size: 18px;
-  }
-</style>
+        .frame-style, .soc-style, .plat-style, .gameworld-style {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            background: #fff;
+        }
+
+        .shop-style {
+            background: #fff;
+            padding: 15px;
+            border: 2px solid #aaa;
+        }
+
+    </style>
 </head>
 <body>
 
-<!-- Sidebar -->
 <div class="sidebar">
-  <div class="toggle-btn" onclick="toggleBar()">─</div>
-  <h2>Menu</h2>
-  <p>Sidebar content here...</p>
+    <div class="button-container1" onclick="toggleBar()">─</div>
+
+    <h2>Menu</h2>
+
+    <button class="button" onclick="onButSimul()">Start a simul</button>
+    <button class="button" onclick="onButSimulation()">Start a simulation</button>
+    <button class="button" onclick="onButCrew()">Crew</button>
+    <button class="button" onclick="onButShop()">Shop</button>
+    <button class="button" onclick="onButGameWorld()">Game World</button>
+
+    <div class="frame-style">
+        <h1>Statistick</h1>
+        <h3>Level: 1</h3>
+        <h3>XP: 00000</h3>
+        <h3>Mooneys: $1000</h3>
+        <h3>Date: <span id="datetime">Loading...</span></h3>
+    </div>
+
+    <button class="button" onclick="onButJob()">Take another job</button>
+    <button class="button" onclick="onButSocMedia()">Soc media</button>
 </div>
 
-<!-- Main Content -->
 <div class="main-content">
-  <h1>Main Content</h1>
-  <p>This is the main area of the page.</p>
+    <h1>WELCOME TO CHILL GAME SIMULATOR!</h1>
+    <p>You're in control of your very own game currier empire …</p>
 </div>
 
 <script>
-  function toggleBar() {
+/* ============================
+   BUTTON FIX (Version 1)
+   KEEP OLD LOOK EXACTLY
+   ============================ */
+
+function toggleBar() {
     const sidebar = document.querySelector(".sidebar");
-    const mainContent = document.querySelector(".main-content");
-    const btn = document.querySelector(".toggle-btn");
+    sidebar.style.display =
+        (sidebar.style.display === "none") ? "block" : "none";
+}
 
-    const collapsed = sidebar.classList.toggle("collapsed");
-    mainContent.classList.toggle("expanded");
-
-    // Change icon automatically
-    btn.textContent = collapsed ? "☰" : "─";
-  }
+/* Your original scripts would continue here */
 </script>
 
 </body>
