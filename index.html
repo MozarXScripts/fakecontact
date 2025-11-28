@@ -1,684 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iPhone Call App Simulator</title>
+    <title>iPhone Call App</title>
     <style>
-        * {
+        body { 
+            font-family: Arial; 
+            background: black; 
+            color: white; 
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            padding: 20px;
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #000;
-            color: white;
-            overflow: hidden;
-            user-select: none;
-        }
-
-        .iphone-container {
+        
+        .container {
             width: 375px;
-            height: 812px;
-            margin: 20px auto;
-            background: #000;
-            border-radius: 40px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-        }
-
-        .status-bar {
-            height: 44px;
-            background: rgba(0,0,0,0.9);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            font-size: 14px;
-            position: relative;
-            z-index: 1000;
-        }
-
-        .time {
-            font-weight: 600;
-        }
-
-        .status-icons {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-        }
-
-        .app-screen {
-            height: calc(100% - 44px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .tab-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 83px;
-            background: rgba(28, 28, 30, 0.95);
-            backdrop-filter: blur(20px);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 0.5px solid rgba(255,255,255,0.1);
-        }
-
-        .tab-button {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 10px;
-            color: rgba(255,255,255,0.6);
-            cursor: pointer;
-            transition: color 0.2s;
-            border: none;
-            background: none;
-        }
-
-        .tab-button.active {
-            color: #007AFF;
-        }
-
-        .tab-icon {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
-        }
-
-        .tab-label {
-            font-size: 10px;
-        }
-
-        .screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 83px;
-            transition: transform 0.3s ease;
-        }
-
-        .screen.hidden {
-            transform: translateX(100%);
-        }
-
-        /* Favorites Screen */
-        .favorites-screen {
+            margin: 0 auto;
             background: #1C1C1E;
             padding: 20px;
+            border-radius: 20px;
         }
-
-        .screen-header {
-            font-size: 34px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .favorite-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 0.5px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-        }
-
-        .favorite-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #007AFF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            font-weight: 600;
-        }
-
-        /* Recents Screen */
-        .recents-screen {
-            background: #1C1C1E;
-            padding: 20px;
-        }
-
-        .recent-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 0.5px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-        }
-
-        .recent-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        /* Contacts Screen */
-        .contacts-screen {
-            background: #1C1C1E;
-        }
-
-        .contacts-list {
-            height: 100%;
-            overflow-y: auto;
-            padding: 0 20px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 0.5px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-        }
-
-        /* Keypad Screen */
-        .keypad-screen {
-            background: #1C1C1E;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-        }
-
-        .number-display {
+        
+        #numberDisplay {
             font-size: 32px;
             text-align: center;
             padding: 20px;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            word-break: break-all;
+            background: #2C2C2E;
+            margin-bottom: 20px;
+            min-height: 40px;
         }
-
+        
         .keypad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            max-width: 300px;
-            margin: 0 auto;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-
-        .key {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            user-select: none;
-        }
-
-        .key:active {
-            background: rgba(255,255,255,0.2);
-            transform: scale(0.95);
-        }
-
-        .key-number {
-            font-size: 32px;
-            font-weight: 300;
-        }
-
-        .key-letters {
-            font-size: 12px;
-            color: rgba(255,255,255,0.6);
-            margin-top: 2px;
-        }
-
-        .keypad-actions {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 30px;
-        }
-
-        .action-button {
-            width: 60px;
+        
+        button {
             height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
+            font-size: 24px;
+            background: #3A3A3C;
+            color: white;
             border: none;
+            border-radius: 30px;
+            cursor: pointer;
         }
-
+        
+        button:active {
+            background: #4A4A4C;
+        }
+        
         .call-button {
             background: #30D158;
         }
-
+        
         .call-button:active {
             background: #2CB34A;
         }
-
+        
         .delete-button {
-            background: rgba(255,255,255,0.1);
+            background: #FF3B30;
         }
-
-        .delete-button:active {
-            background: rgba(255,255,255,0.2);
+        
+        .hidden {
+            display: none;
         }
-
-        /* Call Screen */
-        .call-screen {
-            background: linear-gradient(180deg, #1C1C1E 0%, #2C2C2E 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 40px 20px;
+        
+        #callScreen {
             text-align: center;
+            padding: 40px 20px;
         }
-
-        .caller-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .caller-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: #007AFF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .caller-name {
-            font-size: 36px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .caller-number {
-            font-size: 18px;
-            color: rgba(255,255,255,0.6);
-        }
-
-        .call-status {
-            font-size: 16px;
-            color: rgba(255,255,255,0.8);
-            margin-top: 20px;
-        }
-
-        .call-controls {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+        
+        #callerInfo {
+            font-size: 24px;
             margin-bottom: 40px;
         }
-
-        .control-button {
+        
+        .simple-controls {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            color: white;
-        }
-
-        .control-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
             justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .control-icon:active {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .control-icon svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
-        }
-
-        .control-label {
-            font-size: 12px;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .end-call-button {
-            background: #FF3B30;
-            margin-top: 20px;
-        }
-
-        .end-call-button:active {
-            background: #FF2D20;
-        }
-
-        .add-contact-form {
-            background: #2C2C2E;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px 0;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 16px;
-        }
-
-        .form-button {
-            width: 100%;
-            padding: 12px;
-            background: #007AFF;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .form-button:active {
-            background: #0051D5;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .mute-active {
-            background: #FF3B30 !important;
-        }
-
-        .speaker-active {
-            background: #30D158 !important;
+            gap: 20px;
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
-    <div class="iphone-container">
-        <div class="status-bar">
-            <div class="time">9:41</div>
-            <div class="status-icons">
-                <span>📶</span>
-                <span>🔋</span>
-            </div>
+    <!-- Keypad Screen -->
+    <div id="keypadScreen" class="container">
+        <div id="numberDisplay"></div>
+        
+        <div class="keypad">
+            <button onclick="addNumber('1')">1</button>
+            <button onclick="addNumber('2')">2</button>
+            <button onclick="addNumber('3')">3</button>
+            <button onclick="addNumber('4')">4</button>
+            <button onclick="addNumber('5')">5</button>
+            <button onclick="addNumber('6')">6</button>
+            <button onclick="addNumber('7')">7</button>
+            <button onclick="addNumber('8')">8</button>
+            <button onclick="addNumber('9')">9</button>
+            <button onclick="addNumber('*')">*</button>
+            <button onclick="addNumber('0')">0</button>
+            <button onclick="addNumber('#')">#</button>
         </div>
-
-        <div class="app-screen">
-            <!-- Favorites Screen -->
-            <div class="screen favorites-screen" id="favorites">
-                <h1 class="screen-header">Favorites</h1>
-                <div id="favoritesList"></div>
-            </div>
-
-            <!-- Recents Screen -->
-            <div class="screen recents-screen hidden" id="recents">
-                <h1 class="screen-header">Recents</h1>
-                <div id="recentsList"></div>
-            </div>
-
-            <!-- Contacts Screen -->
-            <div class="screen contacts-screen hidden" id="contacts">
-                <h1 class="screen-header" style="padding: 20px;">Contacts</h1>
-                <div class="contacts-list" id="contactsList"></div>
-                <button class="form-button" id="showAddContactBtn" style="margin: 20px;">Add Contact</button>
-                <div id="addContactForm" class="add-contact-form hidden">
-                    <input type="text" class="form-input" id="contactName" placeholder="Name">
-                    <input type="tel" class="form-input" id="contactPhone" placeholder="Phone">
-                    <button class="form-button" id="saveContactBtn">Save Contact</button>
-                    <button class="form-button" id="cancelContactBtn" style="background: #666;">Cancel</button>
-                </div>
-            </div>
-
-            <!-- Keypad Screen -->
-            <div class="screen keypad-screen hidden" id="keypad">
-                <div class="number-display" id="numberDisplay"></div>
-                <div class="keypad">
-                    <div class="key" data-number="1">
-                        <span class="key-number">1</span>
-                    </div>
-                    <div class="key" data-number="2">
-                        <span class="key-number">2</span>
-                        <span class="key-letters">ABC</span>
-                    </div>
-                    <div class="key" data-number="3">
-                        <span class="key-number">3</span>
-                        <span class="key-letters">DEF</span>
-                    </div>
-                    <div class="key" data-number="4">
-                        <span class="key-number">4</span>
-                        <span class="key-letters">GHI</span>
-                    </div>
-                    <div class="key" data-number="5">
-                        <span class="key-number">5</span>
-                        <span class="key-letters">JKL</span>
-                    </div>
-                    <div class="key" data-number="6">
-                        <span class="key-number">6</span>
-                        <span class="key-letters">MNO</span>
-                    </div>
-                    <div class="key" data-number="7">
-                        <span class="key-number">7</span>
-                        <span class="key-letters">PQRS</span>
-                    </div>
-                    <div class="key" data-number="8">
-                        <span class="key-number">8</span>
-                        <span class="key-letters">TUV</span>
-                    </div>
-                    <div class="key" data-number="9">
-                        <span class="key-number">9</span>
-                        <span class="key-letters">WXYZ</span>
-                    </div>
-                    <div class="key" data-number="*">
-                        <span class="key-number">*</span>
-                    </div>
-                    <div class="key" data-number="0">
-                        <span class="key-number">0</span>
-                        <span class="key-letters">+</span>
-                    </div>
-                    <div class="key" data-number="#">
-                        <span class="key-number">#</span>
-                    </div>
-                </div>
-                <div class="keypad-actions">
-                    <button class="action-button call-button" id="callBtn">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-                            <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
-                        </svg>
-                    </button>
-                    <button class="action-button delete-button" id="deleteBtn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                            <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.12c.36.53.9.88 1.59.88h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3.7 14.3l-1.4 1.4L12 13.4l-4.9 4.9-1.4-1.4L10.6 12 5.7 7.1l1.4-1.4L12 10.6l4.9-4.9 1.4 1.4L13.4 12l4.9 4.9z"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Call Screen -->
-            <div class="screen call-screen hidden" id="callScreen">
-                <div class="caller-info">
-                    <div class="caller-avatar" id="callerAvatar"></div>
-                    <div class="caller-name" id="callerName"></div>
-                    <div class="caller-number" id="callerNumber"></div>
-                    <div class="call-status" id="callStatus">Calling...</div>
-                </div>
-                <div class="call-controls">
-                    <button class="control-button" id="muteBtn">
-                        <div class="control-icon" id="muteIcon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/>
-                            </svg>
-                        </div>
-                        <span class="control-label">mute</span>
-                    </button>
-                    <button class="control-button" id="keypadBtn">
-                        <div class="control-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                            </svg>
-                        </div>
-                        <span class="control-label">keypad</span>
-                    </button>
-                    <button class="control-button" id="speakerBtn">
-                        <div class="control-icon" id="speakerIcon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                            </svg>
-                        </div>
-                        <span class="control-label">speaker</span>
-                    </button>
-                    <button class="control-button" id="addCallBtn">
-                        <div class="control-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                            </svg>
-                        </div>
-                        <span class="control-label">add call</span>
-                    </button>
-                    <button class="control-button" id="facetimeBtn">
-                        <div class="control-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-                            </svg>
-                        </div>
-                        <span class="control-label">FaceTime</span>
-                    </button>
-                    <button class="control-button" id="contactsBtn">
-                        <div class="control-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                            </svg>
-                        </div>
-                        <span class="control-label">contacts</span>
-                    </button>
-                    <button class="control-button end-call-button" id="endCallBtn">
-                        <div class="control-icon">
-                            <svg viewBox="0 0 24 24" fill="white">
-                                <path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.4 0-.75-.16-1.01-.51L.41 13.34c-.18-.24-.29-.88 0-1.12.58-.87 1.28-1.66 2.07-2.35.51-.44 1.14-.77 1.82-.98.32-.1.65-.16.99-.16.42 0 .83.08 1.21.24 1.27.53 2.64.83 4.03.89V3.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v4.5c0 .82-.67 1.5-1.5 1.5z"/>
-                            </svg>
-                        </div>
-                        <span class="control-label">end call</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="tab-bar">
-                <button class="tab-button active" data-screen="favorites">
-                    <svg class="tab-icon" viewBox="0 0 24 24">
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <span class="tab-label">Favorites</span>
-                </button>
-                <button class="tab-button" data-screen="recents">
-                    <svg class="tab-icon" viewBox="0 0 24 24">
-                        <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
-                    </svg>
-                    <span class="tab-label">Recents</span>
-                </button>
-                <button class="tab-button" data-screen="contacts">
-                    <svg class="tab-icon" viewBox="0 0 24 24">
-                        <path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.75c1.24 0 2.25 1.01 2.25 2.25S13.24 11.25 12 11.25 9.75 10.24 9.75 9s1.01-2.25 2.25-2.25zM17 17H7v-1.5c0-1.67 3.33-2.5 5-2.5s5 .83 5 2.5V17z"/>
-                    </svg>
-                    <span class="tab-label">Contacts</span>
-                </button>
-                <button class="tab-button" data-screen="keypad">
-                    <svg class="tab-icon" viewBox="0 0 24 24">
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    <span class="tab-label">Keypad</span>
-                </button>
-            </div>
+        
+        <div style="display: flex; justify-content: center; gap: 20px;">
+            <button class="call-button" onclick="makeCall()">CALL</button>
+            <button class="delete-button" onclick="deleteNumber()">DELETE</button>
+        </div>
+    </div>
+    
+    <!-- Call Screen -->
+    <div id="callScreen" class="container hidden">
+        <div id="callerInfo">
+            <div style="font-size: 36px; margin-bottom: 10px;">📞 Calling</div>
+            <div id="callerNumber" style="font-size: 24px;"></div>
+            <div id="callStatus" style="font-size: 18px; color: #666; margin-top: 20px;">Connecting...</div>
+        </div>
+        
+        <div class="simple-controls">
+            <button onclick="endCall()">END CALL</button>
+            <button onclick="alert('Mute clicked')">MUTE</button>
+            <button onclick="alert('Speaker clicked')">SPEAKER</button>
         </div>
     </div>
 
     <script>
-        // Local file compatible version with proper event listeners
+        // Global variables
         let currentNumber = '';
-        let contacts = [
-            { name: 'John Appleseed', phone: '(555) 123-4567', avatar: 'JA' },
-            { name: 'Sarah Johnson', phone: '(555) 234-5678', avatar: 'SJ' },
-            { name: 'Mike Chen', phone: '(555) 345-6789', avatar: 'MC' },
-            { name: 'Emma Wilson', phone: '(555) 456-7890', avatar: 'EW' }
-        ];
-        let favorites = [0, 1];
-        let recents = [
-            { name: 'John Appleseed', phone: '(555) 123-4567', type: 'outgoing', time: 'Yesterday' },
-            { name: 'Sarah Johnson', phone: '(555) 234-5678', type: 'incoming', time: '2 hours ago' },
-            { name: 'Mike Chen', phone: '(555) 345-6789', type: 'missed', time: '5 hours ago' }
-        ];
-        let isMuted = false;
-        let isSpeaker = false;
-        let isKeypadVisible = false;
         let callTimer;
-        let callSeconds = 15;
+        let callSeconds = 0;
 
-        // Update time
-        function updateTime() {
-            const now = new Date();
-            const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-            document.querySelector('.time').textContent = time;
-        }
-
-        setInterval(updateTime, 1000);
-        updateTime();
-
-        // Screen navigation
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.add('hidden');
-            });
-            document.getElementById(screenId).classList.remove('hidden');
-            
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            const activeButton = document.querySelector(`[data-screen="${screenId}"]`);
-            if (activeButton) {
-                activeButton.classList.add('active');
-            }
-
-            if (screenId === 'favorites') {
-                renderFavorites();
-            } else if (screenId === 'recents') {
-                renderRecents();
-            } else if (screenId === 'contacts') {
-                renderContacts();
-            }
-        }
-
-        // Keypad functions
+        // Basic functions - guaranteed to work
         function addNumber(num) {
             currentNumber += num;
             document.getElementById('numberDisplay').textContent = currentNumber;
@@ -692,241 +146,45 @@
         function makeCall() {
             if (currentNumber.length === 0) return;
             
-            const contact = contacts.find(c => c.phone.replace(/\D/g, '') === currentNumber.replace(/\D/g, ''));
-            
-            document.getElementById('keypad').classList.add('hidden');
+            // Show call screen
+            document.getElementById('keypadScreen').classList.add('hidden');
             document.getElementById('callScreen').classList.remove('hidden');
             
-            if (contact) {
-                document.getElementById('callerName').textContent = contact.name;
-                document.getElementById('callerAvatar').textContent = contact.avatar;
-            } else {
-                document.getElementById('callerName').textContent = currentNumber;
-                document.getElementById('callerAvatar').textContent = currentNumber.slice(-2);
-            }
-            
+            // Set caller info
             document.getElementById('callerNumber').textContent = currentNumber;
             
-            setTimeout(() => {
+            // Simulate call connection
+            setTimeout(function() {
                 document.getElementById('callStatus').textContent = 'Ringing...';
             }, 1000);
             
-            setTimeout(() => {
-                document.getElementById('callStatus').textContent = '00:15';
+            setTimeout(function() {
+                document.getElementById('callStatus').textContent = '00:00';
                 startCallTimer();
             }, 3000);
         }
 
         function startCallTimer() {
-            callTimer = setInterval(() => {
+            callTimer = setInterval(function() {
                 callSeconds++;
-                const minutes = Math.floor(callSeconds / 60);
-                const seconds = callSeconds % 60;
+                var minutes = Math.floor(callSeconds / 60);
+                var seconds = callSeconds % 60;
                 document.getElementById('callStatus').textContent = 
-                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
             }, 1000);
         }
 
         function endCall() {
             clearInterval(callTimer);
-            callSeconds = 15;
+            callSeconds = 0;
             
+            // Go back to keypad
             document.getElementById('callScreen').classList.add('hidden');
-            document.getElementById('keypad').classList.remove('hidden');
+            document.getElementById('keypadScreen').classList.remove('hidden');
             
-            isMuted = false;
-            isSpeaker = false;
-            isKeypadVisible = false;
-            
-            document.getElementById('muteIcon').parentElement.classList.remove('mute-active');
-            document.getElementById('speakerIcon').parentElement.classList.remove('speaker-active');
-            
-            const contact = contacts.find(c => c.phone.replace(/\D/g, '') === currentNumber.replace(/\D/g, ''));
-            recents.unshift({
-                name: contact ? contact.name : currentNumber,
-                phone: currentNumber,
-                type: 'outgoing',
-                time: 'Just now'
-            });
+            // Add to recent calls
+            alert('Call ended - added to recents: ' + currentNumber);
         }
-
-        function toggleMute(button) {
-            isMuted = !isMuted;
-            const iconDiv = button.querySelector('.control-icon');
-            if (isMuted) {
-                iconDiv.classList.add('mute-active');
-                button.querySelector('.control-label').textContent = 'unmute';
-            } else {
-                iconDiv.classList.remove('mute-active');
-                button.querySelector('.control-label').textContent = 'mute';
-            }
-        }
-
-        function toggleSpeaker(button) {
-            isSpeaker = !isSpeaker;
-            const iconDiv = button.querySelector('.control-icon');
-            if (isSpeaker) {
-                iconDiv.classList.add('speaker-active');
-                button.querySelector('.control-label').textContent = 'speaker';
-            } else {
-                iconDiv.classList.remove('speaker-active');
-                button.querySelector('.control-label').textContent = 'speaker';
-            }
-        }
-
-        function toggleKeypad() {
-            isKeypadVisible = !isKeypadVisible;
-            alert(isKeypadVisible ? 'Keypad would show here' : 'Keypad would hide here');
-        }
-
-        function addCall() {
-            alert('Add call functionality would open here');
-        }
-
-        function facetime() {
-            alert('FaceTime would start here');
-        }
-
-        function contacts() {
-            alert('Contacts would open here');
-        }
-
-        function renderFavorites() {
-            const favoritesList = document.getElementById('favoritesList');
-            favoritesList.innerHTML = '';
-            
-            favorites.forEach(index => {
-                const contact = contacts[index];
-                const item = document.createElement('div');
-                item.className = 'favorite-item';
-                item.innerHTML = `
-                    <div class="favorite-avatar">${contact.avatar}</div>
-                    <div>
-                        <div style="font-weight: 600;">${contact.name}</div>
-                        <div style="font-size: 14px; color: rgba(255,255,255,0.6);">${contact.phone}</div>
-                    </div>
-                `;
-                item.addEventListener('click', () => callContact(contact));
-                favoritesList.appendChild(item);
-            });
-        }
-
-        function renderRecents() {
-            const recentsList = document.getElementById('recentsList');
-            recentsList.innerHTML = '';
-            
-            recents.forEach(recent => {
-                const item = document.createElement('div');
-                item.className = 'recent-item';
-                
-                const icon = recent.type === 'incoming' ? '↙️' : recent.type === 'outgoing' ? '↗️' : '❌';
-                
-                item.innerHTML = `
-                    <div class="recent-info">
-                        <span>${icon}</span>
-                        <div>
-                            <div style="font-weight: 600;">${recent.name}</div>
-                            <div style="font-size: 14px; color: rgba(255,255,255,0.6);">${recent.type} • ${recent.time}</div>
-                        </div>
-                    </div>
-                    <span style="color: rgba(255,255,255,0.6);">${recent.phone}</span>
-                `;
-                item.addEventListener('click', () => callNumber(recent.phone));
-                recentsList.appendChild(item);
-            });
-        }
-
-        function renderContacts() {
-            const contactsList = document.getElementById('contactsList');
-            contactsList.innerHTML = '';
-            
-            contacts.forEach(contact => {
-                const item = document.createElement('div');
-                item.className = 'contact-item';
-                item.innerHTML = `
-                    <div class="favorite-avatar" style="margin-right: 12px;">${contact.avatar}</div>
-                    <div>
-                        <div style="font-weight: 600;">${contact.name}</div>
-                        <div style="font-size: 14px; color: rgba(255,255,255,0.6);">${contact.phone}</div>
-                    </div>
-                `;
-                item.addEventListener('click', () => callContact(contact));
-                contactsList.appendChild(item);
-            });
-        }
-
-        function callContact(contact) {
-            currentNumber = contact.phone;
-            document.getElementById('numberDisplay').textContent = currentNumber;
-            makeCall();
-        }
-
-        function callNumber(number) {
-            currentNumber = number;
-            document.getElementById('numberDisplay').textContent = currentNumber;
-            showScreen('keypad');
-            setTimeout(() => makeCall(), 500);
-        }
-
-        function showAddContact() {
-            document.getElementById('addContactForm').classList.remove('hidden');
-        }
-
-        function hideAddContact() {
-            document.getElementById('addContactForm').classList.add('hidden');
-        }
-
-        function addContact() {
-            const name = document.getElementById('contactName').value;
-            const phone = document.getElementById('contactPhone').value;
-            
-            if (name && phone) {
-                const avatar = name.split(' ').map(n => n[0]).join('').toUpperCase();
-                contacts.push({ name, phone, avatar });
-                renderContacts();
-                hideAddContact();
-                document.getElementById('contactName').value = '';
-                document.getElementById('contactPhone').value = '';
-            }
-        }
-
-        // Event listeners setup
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tab navigation
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    const screenId = this.getAttribute('data-screen');
-                    showScreen(screenId);
-                });
-            });
-
-            // Keypad buttons
-            document.querySelectorAll('.key').forEach(key => {
-                key.addEventListener('click', function() {
-                    const number = this.getAttribute('data-number');
-                    addNumber(number);
-                });
-            });
-
-            // Action buttons
-            document.getElementById('callBtn').addEventListener('click', makeCall);
-            document.getElementById('deleteBtn').addEventListener('click', deleteNumber);
-            document.getElementById('endCallBtn').addEventListener('click', endCall);
-            document.getElementById('muteBtn').addEventListener('click', function() { toggleMute(this); });
-            document.getElementById('speakerBtn').addEventListener('click', function() { toggleSpeaker(this); });
-            document.getElementById('keypadBtn').addEventListener('click', toggleKeypad);
-            document.getElementById('addCallBtn').addEventListener('click', addCall);
-            document.getElementById('facetimeBtn').addEventListener('click', facetime);
-            document.getElementById('contactsBtn').addEventListener('click', contacts);
-
-            // Contact form
-            document.getElementById('showAddContactBtn').addEventListener('click', showAddContact);
-            document.getElementById('saveContactBtn').addEventListener('click', addContact);
-            document.getElementById('cancelContactBtn').addEventListener('click', hideAddContact);
-
-            // Initialize
-            renderFavorites();
-        });
     </script>
 </body>
 </html>
